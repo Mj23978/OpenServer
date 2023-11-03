@@ -1,5 +1,6 @@
 import time
 from local_llm_function_calling import Generator
+from local_llm_function_calling.model.llama import LlamaModel
 
 start_time = time.time()
 
@@ -24,7 +25,13 @@ functions = [
 ]
 
 # Initialize the generator with the Hugging Face model and our functions
-generator = Generator.hf(functions, "microsoft/phi-1_5")
+# generator = Generator.hf(functions, "microsoft/phi-1_5")
+generator = Generator(
+    functions,
+    LlamaModel(
+        "D:/AI/llama.cpp/models/dolphin-2.1-mistral-7b.Q5_K_M.gguf"
+    ),
+)
 
 # Generate text using a prompt
 function_call = generator.generate("What is the weather like today in Brooklyn?")

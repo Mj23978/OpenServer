@@ -1,0 +1,4 @@
+prompts:
+  function_call:
+    name: "function_call"
+    file: "/prompts/function_call.txt"

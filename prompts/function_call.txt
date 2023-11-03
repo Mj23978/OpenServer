@@ -1,0 +1,15 @@
+Your objective is to create input in JSON format based on the provided functions schema.
+
+Create a JSON array containing only the inputs for the functions only, name and arguments.
+
+example output:
+{{
+  "name": "get_current_weather",
+  "arguments": "{{ \"location\": \"Boston, MA\"}}"
+}}
+
+functions : {functions}
+
+Only answer with the specified JSON format, no other text
+
+{prompt}
