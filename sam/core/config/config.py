@@ -1,5 +1,5 @@
 import os
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 from pydantic_settings import BaseSettings
 from pathlib import Path
 import yaml
@@ -40,7 +40,7 @@ class Config(BaseSettings):
         config_data = self.load_config(config_file, with_envs)
         super().__init__(**config_data, **kwargs)
 
-    def get_config(self, key: str, default: str = None) -> str:
+    def get_config(self, key: str, default: Optional[str] = None) -> str | None:
         return self.model_dump().get(key, default)
 
     def get_configs(self) -> Dict[str, Any]:
@@ -51,3 +51,7 @@ def init_config(config_file: str, with_envs = False) -> Config:
     ROOT_DIR: str = os.path.dirname(Path(__file__).parent.parent.parent)
     _config_instance = Config(config_file=ROOT_DIR + "/" + config_file, with_envs=with_envs)
     return _config_instance
+
+configs = init_config(config_file="configs/configs.yaml", with_envs=True)
+def get_config(key: str, default: Optional[str] = None) -> str | None:
+    return configs.get_config(key=key, default=default)

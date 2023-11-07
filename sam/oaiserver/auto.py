@@ -33,6 +33,6 @@ def valid_json_filter(context, config, response):
 response = autogen.Completion.create(
     config_list=config_list,
     # config_list=[{"model": "text-ada-001"}, {"model": "gpt-3.5-turbo"}, {"model": "text-davinci-003"}],
-    prompt="How to construct a json request to Bing API to search for 'latest AI news'? Return the JSON request",
+    prompt="How to construct a json request to Bing API to search for 'latest AI news'? Return the JSON request",    
     filter_func=valid_json_filter,
 )

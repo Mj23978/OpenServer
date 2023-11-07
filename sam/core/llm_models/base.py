@@ -1,3 +1,4 @@
+from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List
 from abc import ABC, abstractmethod
@@ -52,3 +53,25 @@ class LLmInputInterface:
         self.grammer_path: str | Path | None = grammer_path
         self.callback_manager: Callbacks | List[Callbacks] | BaseCallbackManager | None = callback_manager
         self.metadata = metadata
+
+
+
+class LLMType(Enum):
+    AI21 = "ai21"
+    COHERE = "cohere"
+    FAKE = "fake"
+    FIREWORKS = "fireworks"
+    FREE = "free"
+    LLAMACPP = "llamacpp"
+    OPENAI = "openai"
+    PALM = "palm"
+    
+    
+    @classmethod
+    def get_type(cls, type: str):
+        type_enum_value = None
+        for enum_value in LLMType:
+            if type == enum_value.value:
+                type_enum_value=enum_value
+                break
+        return type_enum_value or cls.FREE

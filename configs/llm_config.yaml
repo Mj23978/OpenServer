@@ -63,10 +63,14 @@ providers:
       - "openchat-3.5"
       - "dolphin-2.1"
       - "zephyr-7b-beta"
+      - "deepseek-coder-6.7b-instruct"
+      - "deepseek-coder-1.3b-instruct"
     models_path:
       - "D:/AI/llama.cpp/models/openchat_3.5.Q5_K_M.gguf"
       - "D:/AI/llama.cpp/models/dolphin-2.1-mistral-7b.Q5_K_M.gguf"
       - "D:/AI/llama.cpp/models/zephyr-7b-beta.Q5_K_M.gguf"
+      - "D:/AI/llama.cpp/models/deepseek-coder-6.7b-instruct.Q5_K_M.gguf"
+      - "D:/AI/llama.cpp/models/deepseek-coder-1.3b-instruct.Q5_K_M.gguf"
     available: true
     functions: true
     api_key: false

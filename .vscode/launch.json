@@ -1,0 +1,22 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Flask OAI",
+      "type": "python",
+      "request": "launch",
+      "module": "sam.oaiserver.main",
+      "justMyCode": true
+    },
+    {
+      "name": "Test 9",
+      "type": "python",
+      "request": "launch",
+      "module": "test.test-9",
+      "justMyCode": true
+    }
+  ]
+}

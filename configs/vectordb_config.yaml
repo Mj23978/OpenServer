@@ -1,0 +1,58 @@
+embeddings:
+  gradient:
+    name: gradient
+    models: 
+      - "bge-large"
+    available: true
+    api_key: true
+
+  openai:
+    name: openai
+    models: 
+      - "text-embedding-ada-002"
+    available: false
+    api_key: true
+
+  huggingface:
+    name: huggingface
+    models: 
+      - "BAAI/bge-small-en"
+      - "BAAI/bge-medium-en"
+      - "BAAI/bge-large-en"
+      - "BAAI/bge-small"
+      - "BAAI/bge-medium"
+      - "BAAI/bge-large"
+    available: true
+    api_key: false
+
+  palm:
+    name: palm
+    models: 
+      - "models/text-bison-001"
+    available: false
+    api_key: true
+
+  cohere:
+    name: cohere
+    models: 
+      - "embed-english-light-v2.0"
+      - "embed-english-v2.0"
+    available: true
+    api_key: true
+
+vectordbs:
+
+  chromadb:
+    available: true
+  lancedb:
+    available: true
+  milvus:
+    available: true
+  pinecone:
+    available: true
+  qdrant:
+    available: true
+  redis:
+    available: true
+  weaviate:
+    available: true
