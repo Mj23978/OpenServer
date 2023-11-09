@@ -4,16 +4,13 @@ from typing import Any, Dict, List
 from abc import ABC, abstractmethod
 
 from langchain.globals import set_llm_cache
-from gptcache import Cache
-from gptcache.adapter.api import init_similar_cache
-from langchain.cache import GPTCache
-from langchain.callbacks.manager import CallbackManager
-from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
-from langchain.callbacks.base import BaseCallbackManager, Callbacks
+from langchain.callbacks.base import Callbacks
 from langchain.cache import InMemoryCache
+from langchain.schema import BaseMessage
 from llama_cpp import LlamaGrammar
 
 set_llm_cache(InMemoryCache())
+
 
 class BaseLlmModel(ABC):
 
@@ -22,15 +19,25 @@ class BaseLlmModel(ABC):
         pass
 
     @abstractmethod
-    async def acompelete(self, prompts: List[str], callbacks: Callbacks | List[Callbacks] = None, metadata: Dict[str, Any] | None = None):
+    async def acompelete(self, prompts: List[str], callbacks: Callbacks = None, metadata: Dict[str, Any] | None = None):
+        pass
+
+
+class BaseChat(ABC):
+
+    @abstractmethod
+    def compelete(self, prompts: List[List[BaseMessage]]):
+        pass
+
+    @abstractmethod
+    async def acompelete(self, prompts: List[List[BaseMessage]], callbacks: Callbacks = None, metadata: Dict[str, Any] | None = None):
         pass
 
 
 class LLmInputInterface:
     def __init__(self, model: str, api_key: str | None = None, stop: List[str] = ["### Humen:", "### Instruction:", "### Assistant:", "\nQuestion:"], max_tokens=4196, repeat_penalty=0.2,
                  responses: List[str] | None = None, top_k=30, top_p=0.95, streaming: bool = False, temperature=0.2, cache=True, verbose=True, max_retries=10, n_ctx: int = 2048, f16_kv=True,
-                 n_gpu_layers: int = 50, n_threads=4, metadata: Dict[str, Any] | None = None, callback_manager: Callbacks | List[Callbacks] | BaseCallbackManager = CallbackManager(handlers=[StreamingStdOutCallbackHandler()]),
-                 grammer: str | LlamaGrammar | None = None, grammer_path: str | Path | None = None, model_kwargs = {}):
+                 n_gpu_layers: int = 50, n_threads=4, metadata: Dict[str, Any] | None = None, callbacks: Callbacks | None = None, grammer: str | LlamaGrammar | None = None, grammer_path: str | Path | None = None, model_kwargs={}):
         self.api_key: str | None = api_key
         self.model_name: str = model
         self.model_kwargs: Dict[str, Any] = model_kwargs
@@ -51,9 +58,8 @@ class LLmInputInterface:
         self.n_threads: int = n_threads
         self.grammer: str | LlamaGrammar | None = grammer
         self.grammer_path: str | Path | None = grammer_path
-        self.callback_manager: Callbacks | List[Callbacks] | BaseCallbackManager | None = callback_manager
+        self.callbacks: Callbacks = callbacks
         self.metadata = metadata
-
 
 
 class LLMType(Enum):
@@ -65,13 +71,13 @@ class LLMType(Enum):
     LLAMACPP = "llamacpp"
     OPENAI = "openai"
     PALM = "palm"
-    
-    
+    TOGETHER = "together"
+
     @classmethod
     def get_type(cls, type: str):
         type_enum_value = None
         for enum_value in LLMType:
             if type == enum_value.value:
-                type_enum_value=enum_value
+                type_enum_value = enum_value
                 break
         return type_enum_value or cls.FREE

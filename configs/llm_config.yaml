@@ -1,11 +1,106 @@
-providers:
+chat_providers:
+  openai:
+    name: openai
+    models: 
+      - "gpt-3.5-turbo"
+      - "gpt-3.5-turbo-0613"
+      - "gpt-3.5-turbo-16k"
+      - "gpt-3.5-turbo-16k-0613"
+      - "gpt-4"
+      - "gpt-4-0613"
+      - "gpt-4-32k"
+      - "gpt-4-32k-0613"
+    available: false
+    api_key: true
+    functions: true
+    api_key_name: OPENAI_API_KEY
+  palm:
+    name: palm
+    models: 
+      - "models/text-bison-001"
+    available: true
+    functions: true
+    api_key: true
+    api_key_name: PALM_API_KEY
+  cohere:
+    name: cohere
+    models: 
+      - "gptd-instruct-tft"
+      - "command"
+      - "command-nightly"
+      - "command-light-nightly"
+    available: true
+    functions: true
+    api_key: true
+    api_key_name: COHERE_API_KEY
+  fireworks:
+    name: fireworks
+    models:
+      - "accounts/fireworks/models/llama-v2-7b-chat"
+      - "accounts/fireworks/models/llama-v2-13b-code-instruct"
+    available: true
+    api_key: true
+    api_key_name: FIREWORKS_API_KEY
+  together:
+    name: together
+    models:
+      - "NousResearch/Nous-Hermes-Llama2-13b"
+      - "NousResearch/Nous-Hermes-Llama2-70b"
+      - "Open-Orca/Mistral-7B-OpenOrca"
+      - "togethercomputer/CodeLlama-7b-Instruct"
+      - "togethercomputer/CodeLlama-13b-Instruct"
+      - "togethercomputer/CodeLlama-34b-Instruct"
+      - "togethercomputer/Qwen-7b-Chat"
+      - "garage-bAInd/Platypus2-70B-instruct"
+      - "mistralai/Mistral-7B-Instruct-v0.1"
+      - "teknium/OpenHermes-2-Mistral-7B"
+      - "Salesforce/instructcodet5p-16b"
+    available: true
+    api_key: true
+    api_key_name: TOGETHER_API_KEY
+  free:
+    name: free
+    models: 
+      - "gpt-3.5-turbo"
+      - "gpt-3.5-turbo-0613"
+      - "gpt-3.5-turbo-16k"
+      - "gpt-3.5-turbo-16k-0613"
+      - "gpt-4"
+      - "gpt-4-32k"
+      - "gpt-4-0613"
+      - "llama2-7b"
+      - "llama2-13b"
+      - "llama2-70b" 
+      - "palm"
+      - "bard"
+      - "falcon-40b"
+      - "falcon-7b"
+      - "llama-13b"
+      - "command-nightly"
+      - "gpt-neox-20b"
+      - "santacoder"
+      - "bloom"
+      - "code-davinci-002"
+      - "text-ada-001"    
+      - "text-babbage-001"
+      - "text-curie-001"  
+      - "text-davinci-002"
+      - "text-davinci-003"
+      - "llama70b-v2-chat"
+      - "llama13b-v2-chat"
+      - "llama7b-v2-chat" 
+      - "command-light-nightly"
+    available: true
+    api_key: false
+
+
+completion_providers:
   ai21:
     name: ai21
     models: 
       - "j2-jumbo-instruct"
     available: true
     api_key: true
-    functions: true
     api_key_name: AI21_STUDIO_API_KEY
   openai:
     name: openai
@@ -55,7 +150,6 @@ providers:
       - "llama7b-v2-chat" 
       - "command-light-nightly"
     available: true
-    functions: false
     api_key: false
   llamacpp:
     name: llamacpp
@@ -72,14 +166,12 @@ providers:
       - "D:/AI/llama.cpp/models/deepseek-coder-6.7b-instruct.Q5_K_M.gguf"
       - "D:/AI/llama.cpp/models/deepseek-coder-1.3b-instruct.Q5_K_M.gguf"
     available: true
-    functions: true
     api_key: false
   palm:
     name: palm
     models: 
       - "models/text-bison-001"
     available: true
-    functions: true
     api_key: true
     api_key_name: PALM_API_KEY
   cohere:
@@ -90,14 +182,32 @@ providers:
       - "command-nightly"
       - "command-light-nightly"
     available: true
-    functions: true
     api_key: true
     api_key_name: COHERE_API_KEY
   fireworks:
     name: fireworks
     models:
-      - "accounts/fireworks/models/llama-"
+      - "accounts/fireworks/models/mistral-7b-instruct-4k"
+      - "accounts/fireworks/models/function-calling"
+      - "accounts/cresta-ai/models/openorca-7b-fast"
     available: true
-    functions: false
     api_key: true
     api_key_name: FIREWORKS_API_KEY
+  together:
+    name: together
+    models:
+      - "NousResearch/Nous-Hermes-Llama2-13b"
+      - "NousResearch/Nous-Hermes-Llama2-70b"
+      - "Open-Orca/Mistral-7B-OpenOrca"
+      - "Phind/Phind-CodeLlama-34B-v2"
+      - "togethercomputer/CodeLlama-7b-Instruct"
+      - "togethercomputer/CodeLlama-13b-Instruct"
+      - "togethercomputer/CodeLlama-34b-Instruct"
+      - "togethercomputer/Qwen-7b-Chat"
+      - "garage-bAInd/Platypus2-70B-instruct"
+      - "mistralai/Mistral-7B-Instruct-v0.1"
+      - "teknium/OpenHermes-2-Mistral-7B"
+      - "Salesforce/instructcodet5p-16b"
+    available: true
+    api_key: true
+    api_key_name: TOGETHER_API_KEY

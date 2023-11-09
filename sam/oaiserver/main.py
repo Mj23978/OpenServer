@@ -54,7 +54,7 @@ def chat_completions():
             avaialable_functions = True
 
         configs = LLMConfig(with_envs=True)
-        provider = configs.get_providers_for_model(model, avaialable_functions)
+        provider = configs.get_chat_providers(model, avaialable_functions)
 
         logger.info(provider)
 
@@ -85,23 +85,23 @@ def chat_completions():
         chatProvider = LLMFactory.get_model(input=chat_input, provider_name=provider.provider)
         response = chatProvider.compelete(
             prompts=prompts)
+        response_str = llm_result_to_str(response)
 
         completion_id = "".join(random.choices(
             string.ascii_letters + string.digits, k=28))
         completion_timestamp = int(time.time())
-        response_str = llm_result_to_str(response)
-        inp_token = num_tokens_from_string("".join(prompts))
-        out_token = num_tokens_from_string(response_str)
-        functtion_out = None
-
-        if avaialable_functions is True:
-            from langchain.output_parsers.json import SimpleJsonOutputParser
-
-            functtion_out = SimpleJsonOutputParser().parse(response_str)
-            response_str = None
 
 
         if not stream:
+            inp_token = num_tokens_from_string("".join(prompts))
+            out_token = num_tokens_from_string(response_str)
+            function_out = None
+
+            if avaialable_functions is True:
+                from langchain.output_parsers.json import SimpleJsonOutputParser
+
+                function_out = SimpleJsonOutputParser().parse(response_str)
+                response_str = None
 
             res = {
                 "id": f"chatcmpl-{completion_id}",
@@ -124,8 +124,10 @@ def chat_completions():
                     "total_tokens": inp_token + out_token,
                 },
             }
-            if functtion_out is not None:
-                res["choices"][0]["message"]["function_call"] = functtion_out
+            if function_out is not None:
+                res["choices"][0]["message"]["function_call"] = function_out
+                res["choices"][0]["message"]["content"] = None
+                res["choices"][0]["finish_reason"] = "function_call"
             return res
 
         def streaming():
@@ -164,6 +166,123 @@ def chat_completions():
                     }
                 ],
             }
+            content = json.dumps(end_completion_data, separators=(",", ":"))
+            yield f"data: {content}"
+
+        return app.response_class(streaming(), mimetype="text/event-stream")
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
+@app.route("/completions", methods=["POST"])
+def completions():
+    try:
+        model = request.get_json().get("model", "gpt-3.5-turbo")
+        stream = request.get_json().get("stream", False)
+        api_key = request.get_json().get("api_key")
+        prompts = request.get_json().get("prompt")
+        n_gpu_layers= request.get_json().get("n_gpu_layers", 99)
+        temperature= request.get_json().get("temperature", 0.4)
+        max_tokens= request.get_json().get("max_tokens", 1000)
+        top_p= request.get_json().get("top_p", 1)
+        cache= request.get_json().get("cache", False)
+        n_ctx= request.get_json().get("n_ctx", 8196)
+        frequency_penalty= request.get_json().get("frequency_penalty", 0)
+
+
+        configs = LLMConfig(with_envs=True)
+        provider = configs.get_completion_providers(model)
+
+        logger.info(provider)
+
+        completion_input = LLmInputInterface(
+            api_key=api_key,
+            model=provider.model if provider.modelPath is None else provider.modelPath,
+            model_kwargs={
+                "chat_format": "mistral",
+            },
+            streaming=stream,
+            n_gpu_layers=n_gpu_layers,
+            temperature=temperature,
+            max_tokens=max_tokens,     
+            top_p=top_p,   
+            cache=cache,
+            n_ctx=n_ctx,            
+        )
+
+
+        completionProvider = LLMFactory.get_model(input=completion_input, provider_name=provider.provider)
+        
+        if isinstance(prompts, str):
+            prompts = [prompts]
+        response = completionProvider.compelete(
+            prompts=prompts)
+        response_str = llm_result_to_str(response)
+
+        completion_id = "".join(random.choices(
+            string.ascii_letters + string.digits, k=28))
+        completion_timestamp = int(time.time())
+
+        if not stream:
+            inp_token = num_tokens_from_string("".join(prompts))
+            out_token = num_tokens_from_string(response_str)
+
+            res = {
+                "id": f"cmpl-{completion_id}",
+                "object": "text_completion",
+                "created": completion_timestamp,
+                "model": provider.model,
+                "choices": [
+                    {
+                        "index": 0,
+                        "text": response_str,                        
+                        "finish_reason": "stop",
+                    }
+                ],
+                "usage": {
+                    "prompt_tokens": inp_token,
+                    "completion_tokens": out_token,
+                    "total_tokens": inp_token + out_token,
+                },
+            }
+            return res
+
+        def streaming():
+            for chunk in response:
+                completion_data = {
+                    "id": f"cmpl-{completion_id}",
+                    "object": "text_completion.chunk",
+                    "created": completion_timestamp,
+                    "model": provider.model,
+                    "choices": [
+                        {
+                            "index": 0,
+                            "text": chunk,
+                            "finish_reason": None,
+                        }
+                    ],
+                }
+
+                content = json.dumps(completion_data, separators=(",", ":"))
+                yield f"data: {content}"
+
+                time.sleep(0.1)
+
+            end_completion_data = {
+                "id": f"cmpl-{completion_id}",
+                "object": "text_completion.chunk",
+                "created": completion_timestamp,
+                "model": provider.model,
+                "choices": [
+                    {
+                        "index": 0,
+                        "text": "",
+                        "finish_reason": "stop",
+                    }
+                ],
+            }
+
             content = json.dumps(end_completion_data, separators=(",", ":"))
             yield f"data: {content}"
 
@@ -286,7 +405,16 @@ def vectordb_search():
 def get_chat_models():
     try:
         configs = LLMConfig()
-        return configs.providers
+        return configs.chat_providers
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route("/completions", methods=["GET"])
+def get_completion_models():
+    try:
+        configs = LLMConfig()
+        return configs.completion_providers
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

@@ -1,6 +1,0 @@
-- Talk to Documents
-- Coding
-- Create Backend Code
-- Create Front end ( Next - Shadcn - NextUI ) - NextAuth
-- Code Interpreter
-- 

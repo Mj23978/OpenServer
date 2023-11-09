@@ -27,13 +27,13 @@ class LlamaCppModel(BaseLlmModel):
             cache=inp.cache,
             streaming=inp.stream,
             verbose=True,
-            callback_manager=inp.callback_manager,
+            callbacks=inp.callbacks,
         )  # type: ignore
 
-    def compelete(self, prompts: List[str], callbacks: Callbacks | List[Callbacks] = None, metadata: Dict[str, Any] | None = None) -> LLMResult:
+    def compelete(self, prompts: List[str], callbacks: Callbacks = None, metadata: Dict[str, Any] | None = None) -> LLMResult:
         result: LLMResult = self.client.generate(prompts=prompts, metadata=metadata, callbacks=callbacks)
         return result
 
-    async def acompelete(self, prompts: List[str], callbacks: Callbacks | List[Callbacks] = None, metadata: Dict[str, Any] | None = None):
+    async def acompelete(self, prompts: List[str], callbacks: Callbacks = None, metadata: Dict[str, Any] | None = None):
         result = await self.client.agenerate(prompts=prompts, metadata=metadata, callbacks=callbacks)
         return result
