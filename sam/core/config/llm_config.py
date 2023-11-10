@@ -1,9 +1,9 @@
+import random
 from typing import Any, Dict, List
 
 from pydantic import BaseModel
-from .config import init_config
-import random
 
+from .config import init_config
 
 class ConfigLLMModel(BaseModel):
     provider: str
@@ -69,6 +69,7 @@ class LLMConfig:
         if functions is True:
             return dict(filter(lambda x: x[1]["functions"] is True, self.chat_providers.items()))
         return self.chat_providers
+
 
     def pick_random_item(self, lst: List[str], fallback: str):
         if lst:

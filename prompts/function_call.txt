@@ -1,4 +1,5 @@
-Your objective is to create input in JSON format based on the provided functions schema.
+<<system>> Your objective is to create input in JSON format based on the provided functions schema. <</system>>
+<<human>>
 
 Create a JSON array containing only the inputs for the functions only, name and arguments.
 
@@ -13,3 +14,4 @@ functions : {functions}
 Only answer with the specified JSON format, no other text
 
 {prompt}
+<</human>>

@@ -1,4 +1,4 @@
-from sam.core.llm_models.together import ChatTogetherModel
+from sam.core.llm_models.together import ChatTogetherModel, TogetherLLM, TogetherModel
 from .ai21 import AI21Model
 from .fireworks import ChatFireworksModel, FireworksModel
 from .palm import ChatGooglePalmModel, GooglePalmModel
@@ -35,9 +35,11 @@ class LLMFactory:
         elif provider_name == LLMType.FIREWORKS:
             return FireworksModel(input)
 
-        # elif provider_name == LLMType.PALM:
-        else:
+        elif provider_name == LLMType.PALM:
             return GooglePalmModel(input)
+
+        else:
+            return TogetherModel(input)
 
         # else:
         #     return G4FModel(input)

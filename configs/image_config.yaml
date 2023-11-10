@@ -1,0 +1,32 @@
+image_models:
+  together:
+    name: together
+    models:
+      - "SG161222/Realistic_Vision_V3.0_VAE"
+      - "prompthero/openjourney"
+      - "stabilityai/stable-diffusion-xl-base-1.0"
+    available: true
+    api_key: true
+    api_key_name: TOGETHER_API_KEY
+  openai:
+    name: openai
+    models:
+      - "dall-e-3"
+      - "dall-e-2"
+    available: false
+    api_key: true
+    api_key_name: OPENAI_API_KEY
+  novita:
+    name: novita
+    models:
+      - "dynavisionXLAllInOneStylized_release0534bakedvae_129001.safetensors"
+    available: true
+    api_key: true
+  segmind:
+    name: segmind
+    models:
+      - "ssd-1b"
+      - "sdxl1.0-timeless"
+      - "sdxl1.0-dreamshaper"
+    available: true
+    api_key: true

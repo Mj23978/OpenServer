@@ -40,6 +40,7 @@ chat_providers:
       - "accounts/fireworks/models/llama-v2-13b-code-instruct"
     available: true
     api_key: true
+    functions: true
     api_key_name: FIREWORKS_API_KEY
   together:
     name: together
@@ -57,6 +58,7 @@ chat_providers:
       - "Salesforce/instructcodet5p-16b"
     available: true
     api_key: true
+    functions: true
     api_key_name: TOGETHER_API_KEY
   free:
     name: free
@@ -91,6 +93,7 @@ chat_providers:
       - "llama7b-v2-chat" 
       - "command-light-nightly"
     available: true
+    functions: true
     api_key: false
 
 

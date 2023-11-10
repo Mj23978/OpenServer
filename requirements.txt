@@ -79,7 +79,6 @@ weaviate-client==3.25.1
 yarl==1.9.2
 zipp==3.17.0
 pylint==3.0.2
-transformers==4.34.1
 Pillow==9.5.0
 EbookLib==0.18
 html2text==2020.1.16
@@ -98,3 +97,14 @@ lancedb==0.3.3
 text_generation==0.6.1
 pymilvus==2.3.2
 pydantic_settings==2.0.3
+together==0.2.6
+gradientai==1.2.0
+librosa==0.10.1
+soundfile==0.12.1
+datasets==2.14.6
+validators==0.22.0
+novita_client==0.4.5
+transformers==4.35.0 
+diffusers[torch]==0.23.0
+omegaconf==2.3.0
+xformers==
