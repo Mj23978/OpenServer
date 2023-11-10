@@ -1,0 +1,44 @@
+<<system>> Your objective is to create input in JSON format based on the provided functions schema and user prompts. <</system>>
+<<human>>
+functions: [
+  {{
+    "name": "get_current_weather",
+    "description": "Get the current weather in a given location",
+    "parameters": {{
+      "type": "object",
+      "properties": {{
+        "location": {{
+          "type": "string",
+          "description": "The city and state, e.g. San Francisco, CA"
+        }},
+        "unit": {{
+          "type": "string",
+          "enum": [
+            "celsius",
+            "fahrenheit"
+          ]
+        }}
+      }},
+      "required": [
+        "location"
+      ]
+    }}
+  }}
+]
+Create a JSON array containing only the inputs for the functions only, name and arguments.
+
+prompt : What is the weather like in Boston ?
+<</human>>
+<<ai>>
+{{
+  "name": "get_current_weather",
+  "arguments": "{{ \"location\": \"Boston, MA\"}}"
+}}
+<</ai>>
+<<human>>
+functions : {functions}
+
+Only answer with the specified JSON format, no other text
+
+prompt : {prompt}
+<</human>>

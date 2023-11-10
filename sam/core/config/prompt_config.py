@@ -11,6 +11,8 @@ from langchain.schema import (
     AIMessage
 )
 
+from sam.core.utils.langchain import base_messages_to_default
+
 from .config import init_config
 
 class PromptConfigModel(BaseModel):
@@ -51,14 +53,4 @@ class PromptConfig:
         matches = re.findall(pattern, text, re.DOTALL)
         messages = [BaseMessage(type=tag, content=content.format(
             **kwargs)) for tag, content in matches]
-        new_messages = []
-        for message in messages:
-            if message.type.lower() == "system":
-                new_messages.append(SystemMessage(content=message.content))
-            elif message.type.lower() == "human":
-                new_messages.append(HumanMessage(content=message.content))
-            elif message.type.lower() in ["assisstant", "ai", "chat"]:
-                new_messages.append(AIMessage(content=message.content))
-            else:
-                new_messages.append(message)
-        return new_messages
+        return base_messages_to_default(messages)

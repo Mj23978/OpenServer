@@ -15,7 +15,7 @@
       "name": "Test ",
       "type": "python",
       "request": "launch",
-      "module": "test.test-12",
+      "module": "test.test-15",
       "justMyCode": true
     }
   ]

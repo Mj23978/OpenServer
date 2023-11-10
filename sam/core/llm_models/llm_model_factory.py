@@ -1,3 +1,4 @@
+from sam.core.llm_models.gf4 import G4FModel
 from sam.core.llm_models.together import ChatTogetherModel, TogetherLLM, TogetherModel
 from .ai21 import AI21Model
 from .fireworks import ChatFireworksModel, FireworksModel
@@ -38,11 +39,11 @@ class LLMFactory:
         elif provider_name == LLMType.PALM:
             return GooglePalmModel(input)
 
-        else:
+        elif provider_name == LLMType.TOGETHER:
             return TogetherModel(input)
 
-        # else:
-        #     return G4FModel(input)
+        else:
+            return G4FModel(input)
 
     @classmethod
     def get_chat_model(cls, input: LLmInputInterface, provider_name: LLMType | str = 'free'):

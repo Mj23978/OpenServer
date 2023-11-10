@@ -6,12 +6,13 @@ from typing import Any, Dict, List
 
 from flask import jsonify, request
 from langchain.schema import BaseMessage
-from sam.server.app import app
 
+from sam.core.utils import extract_json_from_string, base_messages_to_default, logger
+from sam.core.config import LLMConfig, PromptConfig
 from sam.core.llm_models.base import LLmInputInterface
 from sam.core.llm_models.llm_model_factory import LLMFactory
-from sam.core.config import LLMConfig, PromptConfig
-from sam.core.utils import logger
+
+from sam.server.app import app
 from sam.server.utils import llm_result_to_str, num_tokens_from_string
 
 
@@ -67,6 +68,7 @@ def chat_completions():
 
         messages = [BaseMessage(
             type=message["role"], content=message["content"]) for message in request_data.messages]
+        messages = base_messages_to_default(messages)
 
         if avaialable_functions is True:
             configs = PromptConfig()
@@ -95,9 +97,7 @@ def chat_completions():
             function_out = None
 
             if avaialable_functions is True:
-                from langchain.output_parsers.json import SimpleJsonOutputParser
-
-                function_out = SimpleJsonOutputParser().parse(response_str)
+                function_out = extract_json_from_string(response_str)
 
             res = {
                 "id": f"chatcmpl-{completion_id}",
@@ -120,9 +120,9 @@ def chat_completions():
                     "total_tokens": inp_token + out_token,
                 },
             }
-            if function_out is not None or function_out != "":
+            if function_out is not None and function_out != "" and isinstance(function_out, dict):
                 res["choices"][0]["message"]["content"] = None
-                res["choices"][0]["message"]["function_call"] = function_out
+                res["choices"][0]["message"]["function_call"] = add_to_arguments(function_out)
                 res["choices"][0]["message"]["content"] = None
                 res["choices"][0]["finish_reason"] = "function_call"
             return res
@@ -178,3 +178,19 @@ def get_chat_models():
         return configs.chat_providers
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+def add_to_arguments(data: dict):
+    if 'parameters' in data:
+        data['arguments'] = data.pop('parameters')
+
+    if 'arguments' not in data:
+        data['arguments'] = {}
+
+    for key, value in data.items():
+        if key != 'arguments':
+            data['arguments'][key] = value
+    
+    data['arguments'].pop("name")
+    
+    return data
