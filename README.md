@@ -2,6 +2,24 @@
 
 ![Hero Image](./docs/hero.jpg)
 
+## Table of Contents
+
+- [Open Server 🚀](#open-server-)
+  - [Table of Contents](#table-of-contents)
+  - [Overview 📖](#overview-)
+  - [Roadmap 🗺️](#roadmap-️)
+    - [How to Install \& Run ⚙️](#how-to-install--run-️)
+    - [Features ✨](#features-)
+  - [Server Configurations 🛠️](#server-configurations-️)
+      - [All configs are stored in  `configs/`  folder.](#all-configs-are-stored-in--configs--folder)
+    - [Settings and API Keys](#settings-and-api-keys)
+    - [Models Configs](#models-configs)
+  - [Supported Provider](#supported-provider)
+    - [Completions and Chat Models](#completions-and-chat-models)
+    - [Image Models](#image-models)
+    - [Embeddings](#embeddings)
+    - [Vector Databases](#vector-databases)
+  - [Contributing](#contributing)
 
 ## Overview 📖
 
