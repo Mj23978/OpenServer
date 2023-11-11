@@ -1,61 +1,126 @@
-# Sam-assistant
+# Open Server 🚀
 
-**Note:** This project is in its early stages, and the code may undergo drastic changes.
+![Hero Image](./docs/hero.jpg)
 
-**Note2:** The Gpt Folder is My Custom Fork of GPT4Free you Could Clone the repo and put the content under gpt folder too it will work 
 
-## Overview
+## Overview 📖
 
-Sam-assistant is a personal assistant that is designed to understand your documents, search the internet, and in future versions, create and understand images, and communicate with you. It is built in Python, mainly using Langchain and implements most of Langchain's capabilities.
+Open Server is my attempt to recreate an **OpenAI Compatible Server** for generating text, images, embeddings, and storing them in vector databases. It also includes a chat functionality. 
 
-### How to Install & Run
+The server's request and responses are very similar to OpenAI's API with additional fields needed for different providers. It uses **Langchain** for the LLM part (Robust and powerful with callbacks) and provider SDKs for image generation and more.
 
-- run `poetry install` to install packages
-- run  `docker-compose up` if you wanna store your embeddings in milvus or use serxng for searching the internet
-- run `poetry run uvicorn openserver.main:app --reload` to run rest server (grpc still WIP)
-- Currently ( You, Useless, Cohere, OpenAI, Llama.Cpp ) are working LLM providers For Sam and All Embeddings are working (trying to add more LLM from GPT4Free)
+## Roadmap 🗺️
 
-### Features
+- [ ] Python SDK
+- [ ] Monitoring for LLM generation (LLM Monitor & Prompt Layer)
+- [ ] ( **Soon** ) Audio Translation & Generation & Transcription APIs (Local with Whisper, ElevenLabs)
 
-This section could list the key features of your personal assistant, including but not limited to:
+### How to Install & Run ⚙️
 
--   Document understanding
--   Internet search
--   Image creation and understanding
--   Task creation and goal solving
--   Vector database management
+To install the required packages:
+```
+pip install -r requirements.txt
+```
 
-## Details
+To run the server:
+```
+python -m openserver.main
+```
 
-Sam-assistant includes 7 important classes:
+**Note**: For GPU support, you need to manually install **pytorch** and **llama-cpp-python**, based on your GPU type (CUDA & ROCM).
 
--   **LLMLoader**: Loads 7 different LLMs for use in chains and other parts of the backend (llamacpp, cohere, OpenAI, Theb, Poe, OpenAIhosted, fake), with more coming soon.
--   **EmbeddingsLoader**: Loads 3 different embeddings to embed texts (for now, images will be added later) and store them in vector DBs (Llamacpp, OpenAI, Cohere).
--   **Tools**: Currently, we only have the SeraxNG tool to search the internet, with more tools and agents added soon.
--   **Loaders**: Currently, we only have a simple text loader, with more loaders, like Notion, to be added soon.
--   **Memory**: It contains ChatMessageHistory and Buffer History, with more memory functionalities to be added soon.
--   **BabyAgi**: (Not yet tested) It implements BabyAgi to create tasks and solve goals that it needs.
--   **VectorStores**: It implements Milvus and Chroma VectorStore to save your vectors to a DB and search them.
+### Features ✨
 
-## Running the Application
+This section lists the key features implemented in Open Server:
 
-By running `poetry run uvicorn openserver.main:app --port 7860 --reload` from the command line, you can easily interact with your assistant.
+-   #### Chat & Completions 💬
+    -   Streaming
+    -   Function Calling
+    
+-   #### Image 
+    -   Text-to-Image 
 
-For now, you can run Serax and Milvus in Docker if you want to use them in APIs.
 
-## Tags
+## Server Configurations 🛠️
 
-Some tags that could be added to this project are:
 
--   Personal assistant
--   Python
--   Langchain
--   Chatbot
--   Embeddings
--   SeraxNG
--   Milvus
--   Vector DB
+#### All configs are stored in  `configs/`  folder.
 
-## Conclusion
 
-Sam-assistant is an innovative personal assistant that utilizes the capabilities of Langchain to understand your documents, search the internet, and perform various other tasks. It is a work in progress, and more features will be added in the future.
+###  Settings and API Keys
+
+This file is used to store API keys, URLs, and other similar information. It has a YAML structure and can be used to configure various aspects of the server.
+
+Example `config.yaml`:
+```yaml
+OPENAI_API_KEY: YOUR_OPEN_API_KEY
+PALM_API_KEY: YOUR_PALM_API_KEY
+
+DB_NAME: test
+DB_HOST: localhost
+DB_USERNAME: admin
+DB_PASSWORD: admin
+
+# Add more configuration options as needed...
+```
+
+### Models Configs
+
+These configurations are stored in separate files for better organization and modularity. Each config file follows the YAML structure.
+
+Example LLM Config (`llm_config.yaml`):
+```yaml
+chat_providers:
+  palm:
+    name: palm
+    models: 
+      - "models/text-bison-001"
+    available: true
+    
+# Add more LLM configs as needed...
+```
+
+Example Image Config (`image_config.yaml`):
+```yaml
+image_models:
+  novita:
+    name: novita
+    models:
+      - "dynavisionXLAllInOneStylized_release0534bakedvae_129001.safetensors"
+    available: true
+    api_key: true
+    api_key_name: NOVITA_API_KEY
+
+# Add more image configs as needed...
+```
+
+Example Prompt Config (`prompts_config.yaml`):
+```yaml
+prompts:
+  function_call:
+    name: "function_call"
+    file: "/prompts/function_call.txt"
+
+# Add more prompt configs as needed...
+```
+
+Example Vector Database Config (`vectordb_config.yaml`):
+```yaml
+embeddings:
+  cohere:
+    name: cohere
+    models: 
+      - "embed-english-light-v2.0"
+      - "embed-english-v2.0"
+    available: true
+    api_key: true
+
+vectordbs:
+
+  chromadb:
+    available: true
+   
+# Add more vector database configs as needed...
+```
+
+Feel free to modify and extend these configurations according to your specific needs.
