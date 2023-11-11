@@ -22,6 +22,7 @@ image_models:
       - "dynavisionXLAllInOneStylized_release0534bakedvae_129001.safetensors"
     available: true
     api_key: true
+    api_key_name: NOVITA_API_KEY
   segmind:
     name: segmind
     models:
@@ -30,3 +31,4 @@ image_models:
       - "sdxl1.0-dreamshaper"
     available: true
     api_key: true
+    api_key_name: SEGMIND_API_KEY

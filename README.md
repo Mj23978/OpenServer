@@ -12,7 +12,7 @@ Sam-assistant is a personal assistant that is designed to understand your docume
 
 - run `poetry install` to install packages
 - run  `docker-compose up` if you wanna store your embeddings in milvus or use serxng for searching the internet
-- run `poetry run uvicorn sam.main:app --reload` to run rest server (grpc still WIP)
+- run `poetry run uvicorn openserver.main:app --reload` to run rest server (grpc still WIP)
 - Currently ( You, Useless, Cohere, OpenAI, Llama.Cpp ) are working LLM providers For Sam and All Embeddings are working (trying to add more LLM from GPT4Free)
 
 ### Features
@@ -39,7 +39,7 @@ Sam-assistant includes 7 important classes:
 
 ## Running the Application
 
-By running `poetry run uvicorn sam.main:app --port 7860 --reload` from the command line, you can easily interact with your assistant.
+By running `poetry run uvicorn openserver.main:app --port 7860 --reload` from the command line, you can easily interact with your assistant.
 
 For now, you can run Serax and Milvus in Docker if you want to use them in APIs.
 

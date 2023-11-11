@@ -8,14 +8,7 @@
       "name": "Flask OAI",
       "type": "python",
       "request": "launch",
-      "module": "sam.main",
-      "justMyCode": true
-    },
-    {
-      "name": "Test ",
-      "type": "python",
-      "request": "launch",
-      "module": "test.test-15",
+      "module": "openserver.main",
       "justMyCode": true
     }
   ]
