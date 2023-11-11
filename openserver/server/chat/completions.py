@@ -1,4 +1,6 @@
 import json
+import os
+from pathlib import Path
 import random
 import string
 import time
@@ -77,7 +79,8 @@ def chat_completions():
             messages.pop()
             messages = messages + new_messages
 
-            chat_input.grammer_path = "D:/AI/SamoCoder/test/json.gbnf"
+            ROOT_DIR: str = os.path.dirname(Path(__file__).parent.parent.parent)
+            chat_input.grammer_path = ROOT_DIR + "/docs/json.gbnf"
             chat_input.f16_kv = True
 
         chatProvider = LLMFactory.get_chat_model(

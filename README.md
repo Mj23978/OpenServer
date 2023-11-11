@@ -126,3 +126,27 @@ vectordbs:
 ```
 
 Feel free to modify and extend these configurations according to your specific needs.
+
+## Supported Provider
+
+
+
+## Contributing
+To contribute: Clone the repo locally -> Make a change -> Submit a PR with the change. 
+
+Here's how to modify the repo locally: 
+Step 1: Clone the repo 
+```
+git clone https://github.com/mj23978/openserver.git
+```
+
+Step 2: Navigate into the project, and install dependencies: 
+```
+cd openserver
+pip install -r requirements.txt
+```
+
+Step 3: Submit a PR with your changes! 🚀
+- push your fork to your GitHub repo 
+- submit a PR from there 
+
