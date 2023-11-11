@@ -12,6 +12,8 @@ The server's request and responses are very similar to OpenAI's API with additio
 ## Roadmap 🗺️
 
 - [ ] Python SDK
+- [ ] Docker Compose
+- [ ] ( **Soon** ) Example Next.JS Front working with Open Server
 - [ ] Monitoring for LLM generation (LLM Monitor & Prompt Layer)
 - [ ] ( **Soon** ) Audio Translation & Generation & Transcription APIs (Local with Whisper, ElevenLabs)
 
