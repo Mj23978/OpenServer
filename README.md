@@ -129,7 +129,40 @@ Feel free to modify and extend these configurations according to your specific n
 
 ## Supported Provider
 
+### Completions and Chat Models 
 
+|   |     Provider     |   Completion  |      Chat     | Function Calling |   Streaming   |   |
+|:-:|:----------------:|:-------------:|:-------------:|:----------------:|:-------------:|:-:|
+|   |   -------------  | ------------- | ------------- |   -------------  | ------------- |   |
+|   |      openai      |       ✅       |       ✅       |         ✅        |       ✅       |   |
+|   |      cohere      |       ✅       |       ✅       |                  |       ✅       |   |
+|   |    huggingface   |       ✅       |               |                  |       ✅       |   |
+|   |    together-ai   |       ✅       |       ✅       |        ✅*        |       ✅       |   |
+|   |    google-palm   |       ✅       |       ✅       |         ✅        |       ✅       |   |
+|   |       ai21       |       ✅       |               |         ✅        |       ✅       |   |
+|   |     fireworks    |       ✅       |       ✅       |        ✅*        |       ✅       |   |
+|   | llama-cpp-python |       ✅       |               |         ✅        |       ✅       |   |
+
+* **Some models** of provider support Function Calling.
+
+### Image Models
+
+|   |    Provider   |    Txt2Img    |    Img2Img    |    Upscale    |   |
+|:-:|:-------------:|:-------------:|:-------------:|:-------------:|:-:|
+|   | ------------- | ------------- | ------------- | ------------- |   |
+|   |     openai    |       ✅       |       ✅       |               |   |
+|   |  together-ai  |       ✅       |               |               |   |
+|   |     novita    |       ✅       |       ✅       |       ✅       |   |
+|   |    segmind    |       ✅       |       ✅       |               |   |
+
+### Embeddings
+
+palm, huggingface, openai, gradient, cohere
+
+
+### Vector Databases
+
+chromadb, lancedb, milvus, pinecone, qdrant,redis, weaviate
 
 ## Contributing
 To contribute: Clone the repo locally -> Make a change -> Submit a PR with the change. 
