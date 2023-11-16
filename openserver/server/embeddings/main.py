@@ -21,7 +21,7 @@ def embeddings():
         logger.info(provider)
 
         embeddingProvider = VectorFactory.get_embeddings(
-            type=provider, model=model, api_key=api_key)
+            type=provider.name, model=provider.name, api_key=api_key or provider.args.get("api_key"))
         inp_token = num_tokens_from_string("".join(input_text_list))
 
         resp = []
@@ -46,6 +46,6 @@ def embeddings():
 def get_embeddings_models():
     try:
         configs = VectorDBConfig()
-        return configs.embeddings
+        return jsonify(configs.embeddings)
     except Exception as e:
         return jsonify({'error': str(e)}), 500

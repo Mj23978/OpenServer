@@ -3,19 +3,12 @@ import re
 from typing import Any, Dict
 from anyio import Path
 
-from pydantic import BaseModel
 from langchain.schema import (
     BaseMessage
 )
 
 from ..utils import base_messages_to_default
 from .config import init_config
-
-
-class PromptConfigModel(BaseModel):
-    provider: str
-    model: str
-    modelPath: str | None
 
 
 class PromptConfig:

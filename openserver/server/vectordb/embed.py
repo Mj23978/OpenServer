@@ -25,7 +25,7 @@ def vectordb_text():
         logger.info(embeddings)
 
         embeddingProvider = VectorFactory.get_embeddings(
-            type=embeddings, model=model, api_key=embeddings_api_key)
+            type=embeddings.provider, model=embeddings.name, api_key=embeddings_api_key or embeddings.args.get("api_key"))
         vectordbProvider = VectorFactory.get_vector_storage(
             type=vectordb, api_key=db_api_key, embedding_model=embeddingProvider, index_name=index_name)
 

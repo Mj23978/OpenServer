@@ -17,7 +17,7 @@ def image_generations():
         image_input = ImageInputInterface(
             prompt=data.get("prompt"),
             model=data.get("model"),
-            api_key=data.get("api_key"),
+            api_key=data.get("api_key", None),
             n=data.get("n", 1),
             quality=data.get("quality", "standard"),
             cfg=data.get("cfg", 6.5),
@@ -33,12 +33,13 @@ def image_generations():
         )
 
         configs = ImageConfig(with_envs=False)
-        provider, model = configs.get_image_providers(image_input.model_name)
+        provider = configs.get_image_providers(image_input.model_name)
 
         logger.info(provider)
 
-        image_provider = ImageFactory.get_txt2txt_model(provider)
-
+        image_provider = ImageFactory.get_txt2txt_model(provider.provider)
+        
+        image_input.api_key = image_input.api_key or provider.args.get("api_key")
         images = image_provider.txt2img(image_input)
         if images is None:
             raise ValueError("Response is None")
@@ -64,6 +65,6 @@ def image_generations():
 def get_image_models():
     try:
         configs = ImageConfig()
-        return configs.image_models
+        return jsonify(configs.image_models)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
