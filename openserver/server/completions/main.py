@@ -41,9 +41,12 @@ def completions():
 
         logger.info(provider)
 
+        modelPath = provider.args.get("model_path")
+        if isinstance(modelPath, str) == False:
+            modelPath = None
         completion_input = LLmInputInterface(
-            api_key=request_data.api_key,
-            model=provider.model if provider.modelPath is None else provider.modelPath,
+            api_key=request_data.api_key or provider.args.get("api_key"),
+            model=provider.name if modelPath is None else modelPath,
             model_kwargs={
                 "chat_format": "mistral",
             },
@@ -77,7 +80,7 @@ def completions():
                 "id": f"cmpl-{completion_id}",
                 "object": "text_completion",
                 "created": completion_timestamp,
-                "model": provider.model,
+                "model": provider.name,
                 "choices": [
                     {
                         "index": 0,
@@ -99,7 +102,7 @@ def completions():
                     "id": f"cmpl-{completion_id}",
                     "object": "text_completion.chunk",
                     "created": completion_timestamp,
-                    "model": provider.model,
+                    "model": provider.name,
                     "choices": [
                         {
                             "index": 0,
@@ -118,7 +121,7 @@ def completions():
                 "id": f"cmpl-{completion_id}",
                 "object": "text_completion.chunk",
                 "created": completion_timestamp,
-                "model": provider.model,
+                "model": provider.name,
                 "choices": [
                     {
                         "index": 0,
@@ -140,6 +143,6 @@ def completions():
 def get_completion_models():
     try:
         configs = LLMConfig()
-        return configs.completion_providers
+        return jsonify(configs.completion_providers)
     except Exception as e:
         return jsonify({'error': str(e)}), 500

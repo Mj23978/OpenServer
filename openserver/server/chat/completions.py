@@ -13,7 +13,6 @@ from openserver.core.utils import extract_json_from_string, base_messages_to_def
 from openserver.core.config import LLMConfig, PromptConfig
 from openserver.core.llm_models.base import LLmInputInterface
 from openserver.core.llm_models.llm_model_factory import LLMFactory
-
 from openserver.server.app import app
 from openserver.server.utils import llm_result_to_str, num_tokens_from_string
 
@@ -53,9 +52,12 @@ def chat_completions():
 
         logger.info(provider)
 
+        modelPath = provider.args.get("model_path")
+        if isinstance(modelPath, str) == False:
+            modelPath = None
         chat_input = LLmInputInterface(
-            api_key=request_data.api_key,
-            model=provider.model if provider.modelPath is None else provider.modelPath,
+            api_key=request_data.api_key or provider.args.get("api_key"),
+            model=provider.provider if modelPath is None else modelPath,
             model_kwargs={
                 "chat_format": "mistral",
             },
@@ -106,7 +108,7 @@ def chat_completions():
                 "id": f"chatcmpl-{completion_id}",
                 "object": "chat.completion",
                 "created": completion_timestamp,
-                "model": provider.model,
+                "model": provider.name,
                 "choices": [
                     {
                         "index": 0,
@@ -137,7 +139,7 @@ def chat_completions():
                     "id": f"chatcmpl-{completion_id}",
                     "object": "chat.completion.chunk",
                     "created": completion_timestamp,
-                    "model": provider.model,
+                    "model": provider.name,
                     "choices": [
                         {
                             "index": 0,
@@ -158,7 +160,7 @@ def chat_completions():
                 "id": f"chatcmpl-{completion_id}",
                 "object": "chat.completion.chunk",
                 "created": completion_timestamp,
-                "model": provider.model,
+                "model": provider.name,
                 "choices": [
                     {
                         "index": 0,
@@ -179,7 +181,7 @@ def chat_completions():
 def get_chat_models():
     try:
         configs = LLMConfig()
-        return configs.chat_providers
+        return jsonify(configs.chat_providers)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
