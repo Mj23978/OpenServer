@@ -38,23 +38,21 @@ class ConfigProvidersIn(BaseModel):
     providers: List[ConfigProviderIn]
     args: Dict[str, Any] | None = None
     
-    @classmethod
-    def find_model(cls, providers: List[ConfigProviderIn], search: str):
+    def find_model(self, providers: List[ConfigProviderIn], search: str):
         res: List[ConfigProviderIn] = []
         if len(providers) == 0:
-            providers = cls.providers
-        for provider in cls.providers:
+            providers = self.providers
+        for provider in providers:
             for model in provider.models:
                 if model.name == search:
                     res.append(provider)
         return res
     
-    @classmethod
-    def choose_model(cls, providers: List[ConfigProviderIn], model: str):
+    def choose_model(self, providers: List[ConfigProviderIn], model: str):
         rand = False
         if len(providers) == 0:
             rand = True
-            providers = cls.providers
+            providers = self.providers
         provider = random.choice(providers)
         models = list(filter(lambda x: x.name == model, provider.models))
         if rand == True or len(models) == 0:

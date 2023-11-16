@@ -57,7 +57,7 @@ def chat_completions():
             modelPath = None
         chat_input = LLmInputInterface(
             api_key=request_data.api_key or provider.args.get("api_key"),
-            model=provider.provider if modelPath is None else modelPath,
+            model=provider.name if modelPath is None else modelPath,
             model_kwargs={
                 "chat_format": "mistral",
             },
@@ -181,7 +181,7 @@ def chat_completions():
 def get_chat_models():
     try:
         configs = LLMConfig()
-        return jsonify(configs.chat_providers)
+        return jsonify(configs.chat_providers.dict())
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -192,6 +192,9 @@ def add_to_arguments(data: dict):
 
     if 'arguments' not in data:
         data['arguments'] = {}
+    
+    if isinstance(data["arguments"], str):
+        data["arguments"] = extract_json_from_string(data["arguments"]) or {}
 
     for key, value in data.items():
         if key != 'arguments':
