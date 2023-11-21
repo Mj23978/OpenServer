@@ -57,7 +57,7 @@ def chat_completions():
             modelPath = None
         chat_input = LLmInputInterface(
             api_key=request_data.api_key or provider.args.get("api_key"),
-            model=provider.name if modelPath is None else modelPath,
+            model=provider.key or provider.name if modelPath is None else modelPath,
             model_kwargs={
                 "chat_format": "mistral",
             },
@@ -129,7 +129,7 @@ def chat_completions():
                 res["choices"][0]["message"]["content"] = None
                 res["choices"][0]["message"]["function_call"] = add_to_arguments(
                     function_out)
-                res["choices"][0]["message"]["content"] = None
+                res["choices"][0]["message"]["content"] = f'{res["choices"][0]["message"]["function_call"]}'
                 res["choices"][0]["finish_reason"] = "function_call"
             return res
 
@@ -172,7 +172,7 @@ def chat_completions():
             content = json.dumps(end_completion_data, separators=(",", ":"))
             yield f"data: {content}"
 
-        return app.response_class(streaming(), mimetype="text/event-stream")
+        return app.response_class(streaming(), mimetype="text/event-stream") # type: ignore
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -181,7 +181,7 @@ def chat_completions():
 def get_chat_models():
     try:
         configs = LLMConfig()
-        return jsonify(configs.chat_providers.dict())
+        return jsonify(configs.chat_providers.model_dump())
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -197,9 +197,9 @@ def add_to_arguments(data: dict):
         data["arguments"] = extract_json_from_string(data["arguments"]) or {}
 
     for key, value in data.items():
-        if key != 'arguments':
+        if key != 'arguments' and key != 'name':
             data['arguments'][key] = value
 
-    data['arguments'].pop("name")
+    data["arguments"] = json.dumps(data["arguments"])
 
     return data

@@ -46,7 +46,7 @@ def completions():
             modelPath = None
         completion_input = LLmInputInterface(
             api_key=request_data.api_key or provider.args.get("api_key"),
-            model=provider.name if modelPath is None else modelPath,
+            model=provider.key or provider.name if modelPath is None else modelPath,
             model_kwargs={
                 "chat_format": "mistral",
             },
@@ -134,7 +134,7 @@ def completions():
             content = json.dumps(end_completion_data, separators=(",", ":"))
             yield f"data: {content}"
 
-        return app.response_class(streaming(), mimetype="text/event-stream")
+        return app.response_class(streaming(), mimetype="text/event-stream") # type: ignore
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -143,6 +143,6 @@ def completions():
 def get_completion_models():
     try:
         configs = LLMConfig()
-        return jsonify(configs.completion_providers)
+        return configs.completion_providers.model_dump()
     except Exception as e:
         return jsonify({'error': str(e)}), 500

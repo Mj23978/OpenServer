@@ -45,17 +45,29 @@ chat_providers:
   together:
     name: together
     models:
-      - "NousResearch/Nous-Hermes-Llama2-13b"
-      - "NousResearch/Nous-Hermes-Llama2-70b"
-      - "Open-Orca/Mistral-7B-OpenOrca"
-      - "togethercomputer/CodeLlama-7b-Instruct"
-      - "togethercomputer/CodeLlama-13b-Instruct"
-      - "togethercomputer/CodeLlama-34b-Instruct"
-      - "togethercomputer/Qwen-7b-Chat"
-      - "garage-bAInd/Platypus2-70B-instruct"
-      - "mistralai/Mistral-7B-Instruct-v0.1"
-      - "teknium/OpenHermes-2-Mistral-7B"
-      - "Salesforce/instructcodet5p-16b"
+      NousResearch/Nous-Hermes-Llama2-13b:
+        name: NousResearch/Nous-Hermes-Llama2-13b
+      NousResearch/Nous-Hermes-Llama2-70b:
+        name: NousResearch/Nous-Hermes-Llama2-70b
+      Open-Orca/Mistral-7B-OpenOrca:
+        name: mistral-7b
+        key: Open-Orca/Mistral-7B-OpenOrca
+      togethercomputer/CodeLlama-7b-Instruct:
+        name: togethercomputer/CodeLlama-7b-Instruct
+      togethercomputer/CodeLlama-13b-Instruct:
+        name: togethercomputer/CodeLlama-13b-Instruct
+      togethercomputer/CodeLlama-34b-Instruct:
+        name: togethercomputer/CodeLlama-34b-Instruct
+      togethercomputer/Qwen-7b-Chat:
+        name: togethercomputer/Qwen-7b-Chat
+      garage-bAInd/Platypus2-70B-instruct:
+        name: garage-bAInd/Platypus2-70B-instruct
+      mistralai/Mistral-7B-Instruct-v0.1:
+        name: mistralai/Mistral-7B-Instruct-v0.1
+      teknium/OpenHermes-2-Mistral-7B:
+        name: teknium/OpenHermes-2-Mistral-7B
+      Salesforce/instructcodet5p-16b:
+        name: Salesforce/instructcodet5p-16b
     available: true
     api_key: true
     functions: true
@@ -198,18 +210,30 @@ completion_providers:
   together:
     name: together
     models:
-      - "NousResearch/Nous-Hermes-Llama2-13b"
-      - "NousResearch/Nous-Hermes-Llama2-70b"
-      - "Open-Orca/Mistral-7B-OpenOrca"
-      - "Phind/Phind-CodeLlama-34B-v2"
-      - "togethercomputer/CodeLlama-7b-Instruct"
-      - "togethercomputer/CodeLlama-13b-Instruct"
-      - "togethercomputer/CodeLlama-34b-Instruct"
-      - "togethercomputer/Qwen-7b-Chat"
-      - "garage-bAInd/Platypus2-70B-instruct"
-      - "mistralai/Mistral-7B-Instruct-v0.1"
-      - "teknium/OpenHermes-2-Mistral-7B"
-      - "Salesforce/instructcodet5p-16b"
+      NousResearch/Nous-Hermes-Llama2-13b:
+        name: NousResearch/Nous-Hermes-Llama2-13b
+      NousResearch/Nous-Hermes-Llama2-70b:
+        name: NousResearch/Nous-Hermes-Llama2-70b
+      Open-Orca/Mistral-7B-OpenOrca:
+        name: mistral-7b
+      Phind/Phind-CodeLlama-34B-v2:
+        name: Phind/Phind-CodeLlama-34B-v2
+      togethercomputer/CodeLlama-7b-Instruct:
+        name: togethercomputer/CodeLlama-7b-Instruct
+      togethercomputer/CodeLlama-13b-Instruct:
+        name: togethercomputer/CodeLlama-13b-Instruct
+      togethercomputer/CodeLlama-34b-Instruct:
+        name: togethercomputer/CodeLlama-34b-Instruct
+      togethercomputer/Qwen-7b-Chat:
+        name: togethercomputer/Qwen-7b-Chat
+      garage-bAInd/Platypus2-70B-instruct:
+        name: garage-bAInd/Platypus2-70B-instruct
+      mistralai/Mistral-7B-Instruct-v0.1:
+        name: mistralai/Mistral-7B-Instruct-v0.1
+      teknium/OpenHermes-2-Mistral-7B:
+        name: teknium/OpenHermes-2-Mistral-7B
+      Salesforce/instructcodet5p-16b:
+        name: Salesforce/instructcodet5p-16b
     available: true
     api_key: true
     api_key_name: TOGETHER_API_KEY

@@ -40,6 +40,8 @@ def image_generations():
         image_provider = ImageFactory.get_txt2txt_model(provider.provider)
         
         image_input.api_key = image_input.api_key or provider.args.get("api_key")
+        image_input.model_name = provider.key or image_input.model_name
+        
         images = image_provider.txt2img(image_input)
         if images is None:
             raise ValueError("Response is None")
