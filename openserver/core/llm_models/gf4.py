@@ -19,8 +19,8 @@ from langchain.llms.utils import enforce_stop_tokens
 from langchain.callbacks.base import Callbacks
 from langchain.chat_models.base import (
     BaseChatModel,
-    _agenerate_from_stream,
-    _generate_from_stream,
+    agenerate_from_stream,
+    generate_from_stream,
 )
 from langchain.pydantic_v1 import root_validator
 from langchain.schema.messages import (
@@ -124,7 +124,7 @@ class ChatG4FLLM(BaseChatModel):
                 run_manager=run_manager,
                 **create_kwargs,
             )
-            return _generate_from_stream(stream_iter)
+            return generate_from_stream(stream_iter)
         else:
             for i in range(self.max_retries):
                 try:
@@ -169,7 +169,7 @@ class ChatG4FLLM(BaseChatModel):
                 run_manager=run_manager,
                 **create_kwargs,
             )
-            return await _agenerate_from_stream(stream_iter)
+            return await agenerate_from_stream(stream_iter)
         else:
             for i in range(self.max_retries):
                 try:

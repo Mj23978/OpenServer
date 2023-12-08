@@ -1,8 +1,9 @@
 from typing import Any, Dict, List
 
+from openserver.core.config.config import get_config
 from .base import BaseLlmModel, LLmInputInterface
 
-from langchain.llms import OpenAI
+from langchain.llms.openai import OpenAI
 from langchain.chat_models import ChatOpenAI
 from langchain.schema.output import LLMResult
 from langchain.callbacks.base import Callbacks
@@ -12,7 +13,8 @@ from langchain.schema import BaseMessage
 class OpenAIModel(BaseLlmModel):
     def __init__(self, input: LLmInputInterface) -> None:
         self.client = OpenAI(
-            openai_api_key=input.api_key,
+            api_key=input.api_key,
+            base_url=input.base_url or get_config("OPENAI_BASE_URL"),
             model=input.model_name if input.model_name else "gpt-3.5-turbo",
             batch_size=input.top_k,
             top_p=input.top_p,
@@ -40,7 +42,8 @@ class OpenAIModel(BaseLlmModel):
 class ChatOpenAIModel(BaseLlmModel):
     def __init__(self, input: LLmInputInterface) -> None:
         self.client = ChatOpenAI(
-            openai_api_key=input.api_key,
+            api_key=input.api_key,
+            base_url=input.base_url or get_config("OPENAI_BASE_URL"),
             model=input.model_name if input.model_name else "gpt-3.5-turbo",
             temperature=input.temperature,
             max_tokens=input.max_tokens,

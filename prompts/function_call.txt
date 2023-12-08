@@ -1,5 +1,4 @@
-<<system>> Your objective is to create input in JSON format based on the provided functions schema and user prompts. <</system>>
-<<human>>
+<<human>> Your objective is to create input in JSON format based on the provided functions in JSON schema format and user prompts.
 Create a JSON array containing only the inputs for the functions only, name and arguments.
 
 example output:

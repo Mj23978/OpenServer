@@ -98,4 +98,6 @@ def extract_json_from_string(text: str):
     json_str = parse_json_markdown(text, parser=parse_partial_json)
     if json_str is None:
       json_str = extract_json(text, parser=parse_partial_json)
+    if  isinstance(json_str, list) and len(json_str) > 0:
+        json_str = json_str[0]
     return json_str

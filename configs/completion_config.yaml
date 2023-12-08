@@ -1,0 +1,281 @@
+
+completion_providers:
+  ai21:
+    name: ai21
+    models:
+      - "j2-jumbo-instruct"
+    available: true
+    api_key: true
+    api_key_name: AI21_STUDIO_API_KEY
+  openai:
+    name: openai
+    models:
+      gpt-3.5-turbo:
+        name: gpt-3.5-turbo
+        key: gpt-3.5-turbo
+        cost: 
+          - input: 1.5
+          - output: 2.0
+      gpt-3.5-turbo-0613:
+        name: gpt-3.5-turbo-0613
+        key: gpt-3.5-turbo-0613
+        cost: 
+          - input: 1.5
+          - output: 2.0
+      gpt-3.5-turbo-16k:
+        name: gpt-3.5-turbo-16k
+        key: gpt-3.5-turbo-16k
+        cost: 
+          - input: 3.0
+          - output: 4.0
+      gpt-3.5-turbo-16k-0613:
+        name: gpt-3.5-turbo-16k-0613
+        key: gpt-3.5-turbo-16k-0613
+        cost: 
+          - input: 3.0
+          - output: 4.0
+      gpt-4:
+        name: gpt-4
+        key: gpt-4
+        cost: 
+          - input: 10.0
+          - output: 30.0
+      gpt-4-32k:
+        name: gpt-4-32k
+        key: gpt-4-32k
+        cost: 
+          - input: 60.0
+          - output: 120.0
+      gpt-4-0613:
+        name: gpt-4-0613
+        key: gpt-4-0613
+        cost: 
+          - input: 10.0
+          - output: 30.0
+      gpt-4-32k-0613:
+        name: gpt-4-32k-0613
+        key: gpt-4-32k-0613
+        cost: 
+          - input: 60.0
+          - output: 120.0
+      gpt-3.5-turbo-1106:
+        name: gpt-3.5-turbo-1106
+        key: gpt-3.5-turbo-1106
+        cost: 
+          - input: 1.0
+          - output: 2.0
+      gpt-4-1106-preview:
+        name: gpt-4-1106-preview
+        key: gpt-4-1106-preview
+        cost: 
+          - input: 10.0
+          - output: 30.0
+    available: false
+    api_key: true
+    functions: true
+    api_key_name: OPENAI_API_KEY
+  neuroapi:
+    name: neuroapi
+    provider: openai
+    models:
+      neuroapi/gpt-3.5-turbo:
+        key: gpt-3.5-turbo
+        cost: 
+          input: 1.5
+          output: 2.0
+      neuroapi/gpt-3.5-turbo-0613:
+        key: gpt-3.5-turbo-0613
+        cost: 
+          input: 1.5
+          output: 2.0
+      neuroapi/gpt-3.5-turbo-16k:
+        key: gpt-3.5-turbo-16k
+        cost: 
+          input: 3.0
+          output: 4.0
+      neuroapi/gpt-3.5-turbo-16k-0613:
+        key: gpt-3.5-turbo-16k-0613
+        cost: 
+          input: 3.0
+          output: 4.0
+      neuroapi/gpt-4:
+        key: gpt-4
+        cost: 
+          input: 10.0
+          output: 30.0
+      neuroapi/gpt-4-32k:
+        key: gpt-4-32k
+        cost: 
+          input: 60.0
+          output: 120.0
+      neuroapi/gpt-4-0613:
+        key: gpt-4-0613
+        cost: 
+          input: 10.0
+          output: 30.0
+      neuroapi/gpt-4-32k-0613:
+        key: gpt-4-32k-0613
+        cost: 
+          input: 60.0
+          output: 120.0
+      neuroapi/gpt-3.5-turbo-1106:
+        key: gpt-3.5-turbo-1106
+        cost: 
+          input: 1.0
+          output: 2.0
+      neuroapi/gpt-4-1106-preview:
+        key: gpt-4-1106-preview
+        cost: 
+          input: 10.0
+          output: 30.0
+    available: true
+    api_key: true
+    functions: true
+    base_url: https://neuroapi.host/v1
+    api_key_name: NEUROAPI_API_KEY
+  free:
+    name: free
+    models:
+      - "gpt-3.5-turbo"
+      - "gpt-3.5-turbo-0613"
+      - "gpt-3.5-turbo-16k"
+      - "gpt-3.5-turbo-16k-0613"
+      - "gpt-4"
+      - "gpt-4-32k"
+      - "gpt-4-0613"
+      - "llama2-7b"
+      - "llama2-13b"
+      - "llama2-70b"
+      - "palm"
+      - "bard"
+      - "falcon-40b"
+      - "llama-13b"
+      - "llama70b-v2-chat"
+      - "llama13b-v2-chat"
+      - "llama7b-v2-chat"
+    available: true
+    api_key: false
+  llamacpp:
+    name: llamacpp
+    models:
+      openchat-3.5:
+        key: "D:/AI/llama.cpp/models/openchat_3.5.Q5_K_M.gguf"
+      dolphin-2.1:
+        key: "D:/AI/llama.cpp/models/dolphin-2.1-mistral-7b.Q5_K_M.gguf"
+      zephyr-7b-beta:
+        key: "D:/AI/llama.cpp/models/zephyr-7b-beta.Q5_K_M.gguf"
+      deepseek-coder-6.7b-instruct:
+        key: "D:/AI/llama.cpp/models/deepseek-coder-6.7b-instruct.Q5_K_M.gguf"
+      deepseek-coder-1.3b-instruct:
+        key: "D:/AI/llama.cpp/models/deepseek-coder-1.3b-instruct.Q5_K_M.gguf"
+    available: true
+    api_key: false
+  palm:
+    name: palm
+    models:
+      text-bison-001:
+        key: models/text-bison-001
+        cost: 
+          input: 0.5
+          output: 0.5
+    available: true
+    api_key: true
+    api_key_name: PALM_API_KEY
+  cohere:
+    name: cohere
+    models:
+      gptd-instruct-tft:
+        cost: 
+          input: 1.0
+          output: 2.0
+      command:
+        cost: 
+          input: 1.0
+          output: 2.0
+      command-nightly:
+        cost: 
+          input: 1.0
+          output: 2.0
+      command-light:
+        cost: 
+          input: 0.3
+          output: 0.6
+      command-light-nightly:
+        cost: 
+          input: 0.3
+          output: 0.6
+    available: true
+    api_key: true
+    api_key_name: COHERE_API_KEY
+  fireworks:
+    name: fireworks
+    models:
+      fireworks/mistral-7b-instruct-4k:
+        key: accounts/fireworks/models/mistral-7b-instruct-4k
+        cost: 
+          input: 0.2
+          output: 0.8
+      fireworks/function-calling:
+        key: accounts/fireworks/models/function-calling
+        cost: 
+          input: 0.2
+          output: 0.8
+      fireworks/openorca-7b-fast:
+        key: accounts/cresta-ai/models/openorca-7b-fast
+        cost: 
+          input: 0.2
+          output: 0.8
+    available: true
+    api_key: true
+    api_key_name: FIREWORKS_API_KEY
+  together:
+    name: together
+    models:
+      Phind/Phind-CodeLlama-34B-v2:
+        name: Phind/Phind-CodeLlama-34B-v2
+        cost: 
+          input: 0.8
+          output: 0.8
+      together/Mistral-7B-OpenOrca:
+        key: Open-Orca/Mistral-7B-OpenOrca
+        cost: 
+          input: 0.2
+          output: 0.2
+      together/CodeLlama-13b-Instruct:
+        key: togethercomputer/CodeLlama-13b-Instruct
+        cost: 
+          input: 0.22
+          output: 0.22
+      together/OpenHermes-2p5-Mistral-7B:
+        key: teknium/OpenHermes-2p5-Mistral-7B
+        cost: 
+          input: 0.2
+          output: 0.2
+      together/SOLAR-0-70b-16bit:
+        key: upstage/SOLAR-0-70b-16bit
+        cost: 
+          input: 0.8
+          output: 0.8
+      together/MythoMax-L2-13b:
+        key: Gryphe/MythoMax-L2-13b
+        cost: 
+          input: 0.3
+          output: 0.3
+      together/NexusRaven-V2-13B:
+        key: Nexusflow/NexusRaven-V2-13B
+        cost: 
+          input: 0.3
+          output: 0.3
+      together/Yi-34B:
+        key: zero-one-ai/Yi-34B
+        cost: 
+          input: 0.8
+          output: 0.8
+      together/Yi-6B:
+        key: zero-one-ai/Yi-6B
+        cost: 
+          input: 0.14
+          output: 0.14
+    available: true
+    api_key: true
+    api_key_name: TOGETHER_API_KEY

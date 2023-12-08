@@ -8,8 +8,9 @@ from flask import jsonify, request
 
 from openserver.core.llm_models.base import LLmInputInterface
 from openserver.core.llm_models.llm_model_factory import LLMFactory
-from openserver.core.config import LLMConfig
+from openserver.core.config import CompletionConfig
 from openserver.core.utils import logger
+from openserver.core.utils.cost import completion_price_calculator
 from openserver.server.app import app
 from openserver.server.utils import llm_result_to_str, num_tokens_from_string
 
@@ -36,7 +37,7 @@ def completions():
     try:
         request_data = CompletionsRequest(request)
 
-        configs = LLMConfig(with_envs=True)
+        configs = CompletionConfig(with_envs=True)
         provider = configs.get_completion_providers(request_data.model)
 
         logger.info(provider)
@@ -92,6 +93,7 @@ def completions():
                     "prompt_tokens": inp_token,
                     "completion_tokens": out_token,
                     "total_tokens": inp_token + out_token,
+                    "cost": "{:.6f}".format(completion_price_calculator(provider.cost.input, provider.cost.output, inp_token, out_token))
                 },
             }
             return res
@@ -134,7 +136,8 @@ def completions():
             content = json.dumps(end_completion_data, separators=(",", ":"))
             yield f"data: {content}"
 
-        return app.response_class(streaming(), mimetype="text/event-stream") # type: ignore
+        # type: ignore
+        return app.response_class(streaming(), mimetype="text/event-stream")
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -142,7 +145,11 @@ def completions():
 @app.route("/completions", methods=["GET"])
 def get_completion_models():
     try:
-        configs = LLMConfig()
+        configs = CompletionConfig()
+        for provider in configs.completion_providers.providers:
+            provider.api_key = ""
+            provider.args = dict(filter(lambda item: item[0] not in [
+                'api_key', 'api_key_name'], provider.args.items()))
         return configs.completion_providers.model_dump()
     except Exception as e:
         return jsonify({'error': str(e)}), 500

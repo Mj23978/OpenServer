@@ -6,23 +6,24 @@ import string
 import time
 from typing import Any, Dict, List
 
-from flask import jsonify, request
+from flask import Request, jsonify, request
 from langchain.schema import BaseMessage
 
 from openserver.core.utils import extract_json_from_string, base_messages_to_default, logger
-from openserver.core.config import LLMConfig, PromptConfig
+from openserver.core.config import ChatConfig, PromptConfig
 from openserver.core.llm_models.base import LLmInputInterface
 from openserver.core.llm_models.llm_model_factory import LLMFactory
+from openserver.core.utils.cost import completion_price_calculator
 from openserver.server.app import app
 from openserver.server.utils import llm_result_to_str, num_tokens_from_string
 
 
 class ChatCompletionsRequest:
-    def __init__(self, request):
+    def __init__(self, request: Request):
         try:
             self.model: str = request.get_json().get("model", "gpt-3.5-turbo")
             self.stream: bool = request.get_json().get("stream", False)
-            self.api_key: str = request.get_json().get("api_key")
+            self.api_key: str | None = request.get_json().get("api_key") or (request.authorization.token if request.authorization is not None else None)
             self.messages: List[Dict[str, Any]
                                 ] = request.get_json().get("messages")
             self.functions = request.get_json().get("functions")
@@ -39,25 +40,23 @@ class ChatCompletionsRequest:
 @app.route("/chat/completions", methods=["POST"])
 def chat_completions():
     try:
+        
         request_data = ChatCompletionsRequest(request)
 
-        avaialable_functions = False
+        available_functions = False
 
         if "functions" in request.get_json():
-            avaialable_functions = True
+            available_functions = True
 
-        configs = LLMConfig(with_envs=True)
+        configs = ChatConfig(with_envs=True)
         provider = configs.get_chat_providers(
-            request_data.model, avaialable_functions)
+            request_data.model, available_functions)
 
         logger.info(provider)
 
-        modelPath = provider.args.get("model_path")
-        if isinstance(modelPath, str) == False:
-            modelPath = None
         chat_input = LLmInputInterface(
-            api_key=request_data.api_key or provider.args.get("api_key"),
-            model=provider.key or provider.name if modelPath is None else modelPath,
+            api_key=request_data.api_key or provider.args.get("api_key_name"),
+            model=provider.key or provider.name,
             model_kwargs={
                 "chat_format": "mistral",
             },
@@ -68,13 +67,14 @@ def chat_completions():
             top_p=request_data.top_p,
             cache=request_data.cache,
             n_ctx=request_data.n_ctx,
+            base_url=provider.args.get("base_url")
         )
 
         messages = [BaseMessage(
             type=message["role"], content=message["content"]) for message in request_data.messages]
         messages = base_messages_to_default(messages)
 
-        if avaialable_functions is True:
+        if available_functions is True:
             configs = PromptConfig()
             new_messages = configs.extract_text(configs.prompt_template(
             ), prompt=messages[-1].content, functions=request_data.functions)
@@ -101,7 +101,7 @@ def chat_completions():
             out_token = num_tokens_from_string(response_str)
             function_out = None
 
-            if avaialable_functions is True:
+            if available_functions is True:
                 function_out = extract_json_from_string(response_str)
 
             res = {
@@ -123,6 +123,7 @@ def chat_completions():
                     "prompt_tokens": inp_token,
                     "completion_tokens": out_token,
                     "total_tokens": inp_token + out_token,
+                    "cost": "{:.6f}".format(completion_price_calculator(provider.cost.input, provider.cost.output, inp_token, out_token))
                 },
             }
             if function_out is not None and function_out != "" and isinstance(function_out, dict):
@@ -180,7 +181,11 @@ def chat_completions():
 @app.route("/chat/completions", methods=["GET"])
 def get_chat_models():
     try:
-        configs = LLMConfig()
+        configs = ChatConfig()
+        for provider in configs.chat_providers.providers:
+            provider.api_key = ""
+            provider.args = dict(filter(lambda item: item[0] not in [
+                                           'api_key', 'api_key_name'], provider.args.items()))
         return jsonify(configs.chat_providers.model_dump())
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -189,6 +194,9 @@ def get_chat_models():
 def add_to_arguments(data: dict):
     if 'parameters' in data:
         data['arguments'] = data.pop('parameters')
+
+    if 'properties' in data:
+        data['arguments'] = data.pop('properties')
 
     if 'arguments' not in data:
         data['arguments'] = {}

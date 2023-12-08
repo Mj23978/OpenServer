@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 from abc import ABC, abstractmethod
 
 
@@ -53,6 +53,21 @@ class UpscaleImageInterface:
     def to_dict(self):
         return vars(self)
 
+
+class FilterModelsInterface:
+    id: int
+    name: str | None = None
+    sd_name: str | None = None
+    base_model: str | None = None
+    source: str | None = None
+    civitai_nsfw: bool | None = None
+    civitai_rating: int | None = None
+    civitai_rating_count: int | None = None
+    civitai_tags: str | None = None
+    civitai_update_at: str | None = None
+    civitai_version_id: int | None = None
+    download_name: str | None = None
+    download_status: int | None = None
 
 class ImageType(Enum):
     FIREWORKS = "fireworks"

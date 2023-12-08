@@ -10,6 +10,13 @@
       "request": "launch",
       "module": "openserver.main",
       "justMyCode": true
+    },
+    {
+      "name": "Test OAI",
+      "type": "python",
+      "request": "launch",
+      "module": "test.test-18",
+      "justMyCode": true
     }
   ]
 }

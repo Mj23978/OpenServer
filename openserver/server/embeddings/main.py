@@ -46,6 +46,10 @@ def embeddings():
 def get_embeddings_models():
     try:
         configs = VectorDBConfig()
-        return jsonify(configs.embeddings)
+        for provider in configs.embeddings.providers:
+            provider.api_key = ""
+            provider.args = dict(filter(lambda item: item[0] not in [
+                'api_key', 'api_key_name'], provider.args.items()))
+        return jsonify(configs.embeddings.model_dump())
     except Exception as e:
         return jsonify({'error': str(e)}), 500

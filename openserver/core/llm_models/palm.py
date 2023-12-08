@@ -37,7 +37,7 @@ class ChatGooglePalmModel(BaseLlmModel):
     def __init__(self, input: LLmInputInterface) -> None:
         self.client = ChatGooglePalm(
             google_api_key=input.api_key,
-            model_name=input.model_name if input.model_name else "models/text-bison-001",
+            model_name=input.model_name if input.model_name else "models/chat-bison-001",
             top_p=input.top_p,
             top_k=input.top_k,
             temperature=input.temperature,

@@ -67,6 +67,10 @@ def image_generations():
 def get_image_models():
     try:
         configs = ImageConfig()
-        return jsonify(configs.image_models)
+        for provider in configs.image_models.providers:
+            provider.api_key = ""
+            provider.args = dict(filter(lambda item: item[0] not in [
+                                            'api_key', 'api_key_name'], provider.args.items()))
+        return jsonify(configs.image_models.model_dump())
     except Exception as e:
         return jsonify({'error': str(e)}), 500

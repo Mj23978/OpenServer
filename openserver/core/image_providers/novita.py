@@ -1,6 +1,6 @@
 import os
 import time
-from typing import List
+from typing import Any, List
 import requests
 
 from novita_client import NovitaClient, Txt2ImgRequest, save_image, Img2ImgRequest, UpscaleRequest
@@ -77,14 +77,35 @@ class NovitaImageModel(BaseImageModel):
                             img_bytes, f'{progress.data.imgs[i].split("/")[-1]}')
             return progress.data.imgs
 
-    def search_models(self, name: str, api_key: str | None = None):
+    def search_models(self, attribute: str, value: Any, api_key: str | None = None):
         api_key = api_key or os.getenv("NOVITA_API_KEY")
 
         if self.client is None:
             self.client = NovitaClient(api_key)
         models = self.client.models()
-        return models.get_by_name(name)
+        return [model for model in models if self.filter_models(model, attribute, value)]
 
+    def all_models(self, api_key: str | None = None):
+        api_key = api_key or os.getenv("NOVITA_API_KEY")
+
+        if self.client is None:
+            self.client = NovitaClient(api_key)
+        models = self.client.models()
+        return models
+        
+    def filter_models(self, model: Any, attribute: str, value: Any) -> bool:    
+        if attribute in ["name", "sd_name", "base_model", "civitai_tags", "download_name"]:
+            field = getattr(model, attribute)
+            if field is None:
+                return False
+            return field.find(value) != -1
+        if attribute in ["civitai_version_id", "download_status"]:
+            field = getattr(model, attribute)
+            if field is None:
+                return False
+            return field == value
+        return False
+    
     def get_image_task_id(self, task_id: str, api_key: str | None = None):
         api_key = api_key or os.getenv("NOVITA_API_KEY")
         return retry_request(task_id, api_key)

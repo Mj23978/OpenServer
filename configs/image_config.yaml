@@ -20,6 +20,7 @@ image_models:
     name: novita
     models:
       - "dynavisionXLAllInOneStylized_release0534bakedvae_129001.safetensors"
+      - "turbovisionxlSuperFastXLBasedOnNew_alphaV0101Bakedvae.safetensors"
     available: true
     api_key: true
     api_key_name: NOVITA_API_KEY

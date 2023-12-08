@@ -36,8 +36,9 @@ class BaseChat(ABC):
 
 class LLmInputInterface:
     def __init__(self, model: str, api_key: str | None = None, stop: List[str] = ["### Humen:", "### Instruction:", "### Assistant:", "\nQuestion:"], max_tokens=4196, repeat_penalty=0.2,
-                 responses: List[str] | None = None, top_k=30, top_p=0.95, streaming: bool = False, temperature=0.2, cache=True, verbose=True, max_retries=10, n_ctx: int = 2048, f16_kv=True,
-                 n_gpu_layers: int = 50, n_threads=4, metadata: Dict[str, Any] | None = None, callbacks: Callbacks | None = None, grammer: str | LlamaGrammar | None = None, grammer_path: str | Path | None = None, model_kwargs={}):
+                 responses: List[str] | None = None, top_k=30, top_p=0.95, streaming: bool = False, temperature=0.2, cache=True, verbose=True, max_retries=10, n_ctx: int = 2048, f16_kv=True, 
+                 n_gpu_layers: int = 50, n_threads=4, metadata: Dict[str, Any] | None = None, callbacks: Callbacks | None = None, grammer: str | LlamaGrammar | None = None, 
+                 grammer_path: str | Path | None = None, model_kwargs={}, base_url: str | None = None):
         self.api_key: str | None = api_key
         self.model_name: str = model
         self.model_kwargs: Dict[str, Any] = model_kwargs
@@ -60,6 +61,7 @@ class LLmInputInterface:
         self.grammer_path: str | Path | None = grammer_path
         self.callbacks: Callbacks = callbacks
         self.metadata = metadata
+        self.base_url = base_url
 
 
 class LLMType(Enum):

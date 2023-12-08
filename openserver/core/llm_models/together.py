@@ -9,7 +9,7 @@ from langchain.pydantic_v1 import root_validator
 from langchain.load.serializable import Serializable
 from langchain.chat_models.base import (
     BaseChatModel,
-    _generate_from_stream,
+    generate_from_stream,
 )
 from langchain.callbacks.base import Callbacks
 from langchain.schema.output import LLMResult, GenerationChunk, ChatGeneration, ChatGenerationChunk, ChatResult
@@ -136,7 +136,7 @@ class ChatTogetherLLM(BaseChatModel, BaseTogether):
                 run_manager=run_manager,
                 **kwargs,
             )
-            return _generate_from_stream(stream_iter)
+            return generate_from_stream(stream_iter)
         else:
             for i in range(self.max_retries):
                 try:
